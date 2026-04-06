@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>Voice Companion – Design 3 Voice-First</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    background: #060608;
+    font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+  }
+  .phone {
+    width: 393px;
+    height: 852px;
+    background: #060608;
+    border-radius: 54px;
+    overflow: hidden;
+    position: relative;
+    box-shadow: 0 0 0 1px rgba(255,255,255,0.08), 0 40px 100px rgba(0,0,0,0.6);
+    display: flex;
+    flex-direction: column;
+  }
+  .status-bar {
+    height: 54px;
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    padding: 0 28px 8px;
+    font-size: 12px;
+    font-weight: 600;
+    color: rgba(255,255,255,0.5);
+    position: relative;
+    z-index: 10;
+  }
+  /* Voice mode - full screen */
+  .voice-screen {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    padding: 20px 24px 40px;
+    position: relative;
+  }
+  .top-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+  }
+  .ai-label {
+    font-size: 15px;
+    font-weight: 500;
+    color: rgba(255,255,255,0.4);
+    letter-spacing: 1px;
+    text-transform: uppercase;
+  }
+  .ai-name {
+    font-size: 28px;
+    font-weight: 300;
+    color: #fff;
+    letter-spacing: 1px;
+  }
+  /* Center waveform */
+  .center-section {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 32px;
+    width: 100%;
+  }
+  /* Big circular visualizer */
+  .visualizer {
+    position: relative;
+    width: 200px;
+    height: 200px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .vis-ring {
+    position: absolute;
+    border-radius: 50%;
+    border: 1px solid rgba(255,255,255,0.08);
+    animation: vis-expand 3s ease-out infinite;
+  }
+  .vis-ring:nth-child(1) { width: 200px; height: 200px; animation-delay: 0s; }
+  .vis-ring:nth-child(2) { width: 200px; height: 200px; animation-delay: 1s; }
+  .vis-ring:nth-child(3) { width: 200px; height: 200px; animation-delay: 2s; }
+  @keyframes vis-expand {
+    0% { transform: scale(0.5); opacity: 0.6; }
+    100% { transform: scale(1.5); opacity: 0; }
+  }
+  .vis-core {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(255,255,255,0.15) 0%, rgba(255,255,255,0.03) 100%);
+    border: 1px solid rgba(255,255,255,0.15);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    animation: core-pulse 2s ease-in-out infinite;
+  }
+  @keyframes core-pulse {
+    0%,100% { transform: scale(1); }
+    50% { transform: scale(1.08); }
+  }
+  /* Waveform bars */
+  .waveform {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    height: 50px;
+  }
+  .bar {
+    width: 3px;
+    border-radius: 3px;
+    background: rgba(255,255,255,0.7);
+    animation: bar-wave 1s ease-in-out infinite;
+  }
+  .bar:nth-child(1)  { height:10px; animation-delay:0.0s; }
+  .bar:nth-child(2)  { height:22px; animation-delay:0.08s; }
+  .bar:nth-child(3)  { height:16px; animation-delay:0.16s; }
+  .bar:nth-child(4)  { height:34px; animation-delay:0.24s; }
+  .bar:nth-child(5)  { height:26px; animation-delay:0.32s; }
+  .bar:nth-child(6)  { height:42px; animation-delay:0.40s; }
+  .bar:nth-child(7)  { height:30px; animation-delay:0.48s; }
+  .bar:nth-child(8)  { height:44px; animation-delay:0.56s; }
+  .bar:nth-child(9)  { height:28px; animation-delay:0.48s; }
+  .bar:nth-child(10) { height:38px; animation-delay:0.40s; }
+  .bar:nth-child(11) { height:24px; animation-delay:0.32s; }
+  .bar:nth-child(12) { height:40px; animation-delay:0.24s; }
+  .bar:nth-child(13) { height:20px; animation-delay:0.16s; }
+  .bar:nth-child(14) { height:30px; animation-delay:0.08s; }
+  .bar:nth-child(15) { height:12px; animation-delay:0.0s; }
+  @keyframes bar-wave {
+    0%,100% { transform: scaleY(1); opacity: 0.5; }
+    50% { transform: scaleY(1.6); opacity: 1; }
+  }
+  /* Transcript */
+  .transcript {
+    text-align: center;
+    padding: 0 20px;
+    min-height: 80px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+  .transcript-ai {
+    font-size: 18px;
+    font-weight: 300;
+    color: rgba(255,255,255,0.9);
+    line-height: 1.5;
+    animation: fadeup 0.4s ease-out;
+  }
+  .transcript-user {
+    font-size: 14px;
+    color: rgba(255,255,255,0.35);
+    font-style: italic;
+  }
+  @keyframes fadeup {
+    from { transform: translateY(8px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+  }
+  /* Bottom controls */
+  .bottom-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
+    width: 100%;
+  }
+  .controls {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 24px;
+  }
+  .ctrl-btn {
+    width: 48px; height: 48px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.08);
+    border: 1px solid rgba(255,255,255,0.12);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    color: rgba(255,255,255,0.6);
+    font-size: 18px;
+  }
+  .mic-main {
+    width: 72px; height: 72px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.12);
+    border: 1.5px solid rgba(255,255,255,0.3);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    animation: mic-glow 2s ease-in-out infinite;
+    box-shadow: 0 0 0 0 rgba(255,255,255,0.2);
+  }
+  @keyframes mic-glow {
+    0%,100% { box-shadow: 0 0 0 0 rgba(255,255,255,0.2); }
+    50% { box-shadow: 0 0 0 12px rgba(255,255,255,0); }
+  }
+  .mic-icon { width: 24px; height: 24px; fill: white; }
+  .keyboard-btn {
+    background: none;
+    border: none;
+    color: rgba(255,255,255,0.3);
+    font-size: 12px;
+    letter-spacing: 0.5px;
+    cursor: pointer;
+    padding: 8px;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+  }
+  .keyboard-icon { width: 14px; height: 14px; fill: currentColor; }
+</style>
+</head>
+<body>
+<div class="phone">
+  <div class="status-bar"><span>9:41</span><span>●●●</span></div>
+  <div class="voice-screen">
+    <!-- Top -->
+    <div class="top-section">
+      <div class="ai-label">AI Companion</div>
+      <div class="ai-name">Dandi</div>
+    </div>
+    <!-- Center -->
+    <div class="center-section">
+      <div class="visualizer">
+        <div class="vis-ring"></div>
+        <div class="vis-ring"></div>
+        <div class="vis-ring"></div>
+        <div class="vis-core"></div>
+      </div>
+      <div class="waveform">
+        <div class="bar"></div><div class="bar"></div><div class="bar"></div>
+        <div class="bar"></div><div class="bar"></div><div class="bar"></div>
+        <div class="bar"></div><div class="bar"></div><div class="bar"></div>
+        <div class="bar"></div><div class="bar"></div><div class="bar"></div>
+        <div class="bar"></div><div class="bar"></div><div class="bar"></div>
+      </div>
+      <div class="transcript">
+        <div class="transcript-ai">"腰酸了去拉伸一下，别硬撑。今天已经很不错了~"</div>
+        <div class="transcript-user">你：今天收拾了一天 有点累</div>
+      </div>
+    </div>
+    <!-- Bottom -->
+    <div class="bottom-section">
+      <div class="controls">
+        <div class="ctrl-btn">⏸</div>
+        <div class="mic-main">
+          <svg class="mic-icon" viewBox="0 0 24 24"><path d="M12 1a4 4 0 0 1 4 4v6a4 4 0 0 1-8 0V5a4 4 0 0 1 4-4zm-1 17.93V21h2v-2.07A8 8 0 0 0 20 11h-2a6 6 0 0 1-12 0H4a8 8 0 0 0 7 7.93z"/></svg>
+        </div>
+        <div class="ctrl-btn">✕</div>
+      </div>
+      <button class="keyboard-btn">
+        <svg class="keyboard-icon" viewBox="0 0 24 24"><path d="M20 5H4a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2zM8 15H5v-2h3v2zm0-4H5V9h3v2zm4 4h-3v-2h3v2zm0-4h-3V9h3v2zm4 4h-3v-2h3v2zm0-4h-3V9h3v2zm3 4h-2v-2h2v2zm0-4h-2V9h2v2z"/></svg>
+        Switch to text
+      </button>
+    </div>
+  </div>
+</div>
+</body>
+</html>

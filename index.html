@@ -2,23 +2,98 @@
 <html>
 <head>
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Voice Companion – Prototypes</title>
 <style>
-  body { background: #0a0a0f; color: #fff; font-family: -apple-system, sans-serif; display: flex; flex-direction: column; align-items: center; padding: 40px 20px; }
-  h1 { font-size: 24px; margin-bottom: 8px; color: #a78bfa; }
-  p { color: rgba(255,255,255,0.5); margin-bottom: 40px; font-size: 14px; }
-  .grid { display: flex; gap: 20px; flex-wrap: wrap; justify-content: center; }
-  a { background: rgba(124,58,237,0.2); border: 1px solid rgba(139,92,246,0.3); border-radius: 16px; padding: 20px 32px; color: #e2d9ff; text-decoration: none; font-size: 16px; transition: all 0.2s; }
-  a:hover { background: rgba(124,58,237,0.4); transform: translateY(-2px); }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    background: #0a0a0f;
+    color: #fff;
+    font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', sans-serif;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 60px 20px 80px;
+  }
+  .header { text-align: center; margin-bottom: 48px; }
+  .header h1 { font-size: 28px; font-weight: 300; color: #a78bfa; letter-spacing: 1px; }
+  .header p { margin-top: 8px; color: rgba(255,255,255,0.4); font-size: 14px; }
+  .grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 24px;
+    justify-content: center;
+    max-width: 900px;
+  }
+  .card {
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 20px;
+    overflow: hidden;
+    width: 260px;
+    transition: transform 0.2s, box-shadow 0.2s;
+    cursor: pointer;
+    text-decoration: none;
+    color: inherit;
+  }
+  .card:hover { transform: translateY(-4px); box-shadow: 0 20px 60px rgba(0,0,0,0.4); }
+  .card-preview {
+    height: 180px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 48px;
+  }
+  .card-preview.d1 { background: linear-gradient(135deg, #1e0a4a, #4c1d95); }
+  .card-preview.d2 { background: linear-gradient(135deg, #e8e8f0, #d0d0e8); }
+  .card-preview.d3 { background: #060608; }
+  .card-body { padding: 16px 20px 20px; }
+  .card-title { font-size: 16px; font-weight: 600; margin-bottom: 4px; }
+  .card-desc { font-size: 13px; color: rgba(255,255,255,0.45); line-height: 1.5; }
+  .badge {
+    display: inline-block;
+    margin-top: 10px;
+    padding: 3px 10px;
+    border-radius: 20px;
+    font-size: 11px;
+    font-weight: 600;
+    background: rgba(139,92,246,0.2);
+    color: #a78bfa;
+    border: 1px solid rgba(139,92,246,0.3);
+  }
 </style>
 </head>
 <body>
-  <h1>Voice Companion</h1>
-  <p>AI voice companion app prototypes</p>
+  <div class="header">
+    <h1>🎙️ Voice Companion</h1>
+    <p>UI Prototype Designs · v0.1</p>
+  </div>
   <div class="grid">
-    <a href="prototype/design-1.html">Design 1 — Dark Ambient</a>
-    <a href="prototype/design-2.html">Design 2 — Coming soon</a>
-    <a href="prototype/design-3.html">Design 3 — Coming soon</a>
+    <a class="card" href="prototype/design-1.html">
+      <div class="card-preview d1">🔮</div>
+      <div class="card-body">
+        <div class="card-title">Design 1 · Dark Ambient</div>
+        <div class="card-desc">Purple orb with breathing animation. Chat bubbles + voice input. Dark immersive feel.</div>
+        <span class="badge">Chat + Voice</span>
+      </div>
+    </a>
+    <a class="card" href="prototype/design-2.html">
+      <div class="card-preview d2">🤍</div>
+      <div class="card-body">
+        <div class="card-title">Design 2 · Clean Minimal</div>
+        <div class="card-desc">Apple-style white UI. Soft shadows, clean bubbles, typing indicator. Light and modern.</div>
+        <span class="badge">Chat + Voice</span>
+      </div>
+    </a>
+    <a class="card" href="prototype/design-3.html">
+      <div class="card-preview d3">〰️</div>
+      <div class="card-body">
+        <div class="card-title">Design 3 · Voice First</div>
+        <div class="card-desc">Full-screen voice interface. Waveform visualizer, floating transcript. Text mode on tap.</div>
+        <span class="badge">Voice First</span>
+      </div>
+    </a>
   </div>
 </body>
 </html>
